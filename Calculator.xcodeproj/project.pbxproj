@@ -97,9 +97,9 @@
 		BB4295FF1F872ED000657C3F /* Calculator */ = {
 			isa = PBXGroup;
 			children = (
-				BB4296001F872ED000657C3F /* AppDelegate.swift */,
 				BB4296021F872ED000657C3F /* ViewController.swift */,
 				BB4296041F872ED000657C3F /* Main.storyboard */,
+				BB4296001F872ED000657C3F /* AppDelegate.swift */,
 				BB4296071F872ED000657C3F /* Assets.xcassets */,
 				BB4296091F872ED000657C3F /* LaunchScreen.storyboard */,
 				BB42960C1F872ED000657C3F /* Info.plist */,
