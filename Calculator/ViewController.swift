@@ -15,18 +15,64 @@ class ViewController: UIViewController {
     //all instances of classes live in the heap and memory is managed for you via reference counting.
     //In this case, the var is initialized and assigned a value.  Had the value not been assigned, it would've needed an initializer to give it a literal value or a parameter argument reference value.
     
-    var userIsInTheMiddleOfTypingANumber: Bool = false
-    
+    //Due to type inference, the type isn't necessary below
+    //var userIsInTheMiddleOfTypingANumber: Bool = false
+    var userIsInTheMiddleOfTypingANumber = false
     @IBAction func appendDigit(_ sender: UIButton) {
         let digit = sender.currentTitle!
         if userIsInTheMiddleOfTypingANumber {
             display.text = display.text! + digit
-
         } else {
             display.text = digit
             userIsInTheMiddleOfTypingANumber = true
         }
-        print("digit = \(String(describing: digit))")
+        //print("digit = \(String(describing: digit))")
     }
+    var operandStack = Array<Double>()
+    
+    @IBAction func enter() {
+        userIsInTheMiddleOfTypingANumber = false
+        operandStack.append(displayValue)
+        print("operandStack = \(operandStack)")
+    }
+    @IBAction func operate(_ sender: UIButton) {
+        let operation = sender.currentTitle!
+        if userIsInTheMiddleOfTypingANumber {
+            enter()
+        }
+        switch operation {
+        //{ $0 * $1 } is a function passed as an argument
+        //performOperation({ $0 * $1 }) is the same as...
+        //performOperation() { $0 * $1 } ...if {$0 * $1 } is last argument which is the same as...
+        //performOperation { $0 * $1 } doesn't need the () if it only has one argument
+        case "×": performOperation { $0 * $1 }
+        case "÷": performOperation { $1 / $0 }
+        case "+": performOperation { $0 + $1 }
+        case "−": performOperation { $1 - $0 }
+        //case "√"
+        default: break
+            
+        }
+    }
+    func performOperation(operation: (Double, Double) -> Double) {
+        if operandStack.count >= 2 {
+            displayValue = operation(operandStack.removeLast(), operandStack.removeLast())
+            enter()
+        }
+    }
+    
+    var displayValue: Double {
+        get {
+            print("\(display.text!)")
+            return NumberFormatter().number(from: display.text!)!.doubleValue
+
+        }
+        set {
+            display.text = "\(newValue)"
+            userIsInTheMiddleOfTypingANumber = false
+            
+        }
+    }
+    
 }
 
